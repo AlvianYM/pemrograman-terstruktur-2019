@@ -1,77 +1,65 @@
 #include <iostream>
-#include <math.h>
+#define MAX_STACK_SIZE 10
 
-using namespace std;
-struct Bola {
-    double r;
+struct Element {
+    int data;
 };
 
-struct ListBola{
-    Bola b;
-    ListBola *next;
+class MyStack {
+    private:
+    Element stack[MAX_STACK_SIZE];
+
+    int top=-1;
+
+    public:
+    bool isEmpty(){
+        return (top<0); 
+    }
+    bool isFull(){
+        return top == MAX_STACK_SIZE-1;
+    }
+    void push(int data){
+        Element item;
+        item.data=data;
+        if (!isFull()){
+            stack[++top]=item;
+        } else {
+            std::cout<<"Stack Penuh"<<std::endl;
+        }
+    }
+    Element pop(){
+        Element item;
+        if (!isEmpty()){
+            item = stack[top--];
+        } else {
+            std::cout<<"Stack Kosong"<<std::endl;
+        }
+        return item;
+    }
+    void printStackList(){
+        if (!isEmpty()){
+            for (int i=top;i>=0;i--)
+                std::cout<<stack[i].data<<std::endl;
+        } else {
+            std::cout<<"Stack Kosong"<<std::endl;
+        }
+    }
+    int getTop(){
+        return top;
+    }
 };
 
-ListBola *head=NULL;
-
-bool isEmpty(){
-    return head==NULL;
-}
-
-void tambahDepan(double rBola){
-    ListBola *baru=new ListBola();
-    baru->b.r=rBola;
-    baru->next=NULL;
-
-    if (isEmpty()){
-        head=baru;
-        // cout<<"kosong\n";
-    } else {
-        // cout<<"baru\n";
-        baru->next = head;
-        head = baru;
-    }
-}
-
-void tambahBelakang(double rBola){
-    ListBola *baru=new ListBola();
-    baru->b.r=rBola;
-    baru->next=NULL;
-
-    if (isEmpty()){
-        head=baru;
-        // cout<<"kosong\n";
-    } else {
-        ListBola *bantu;
-        bantu=head;
-        while (bantu->next !=NULL){
-            bantu=bantu->next;
-        }
-        bantu->next=baru;
-    }
-}
-void cetakList(){
-    if (isEmpty()){
-        cout<<"List Kosong\n";
-    } else {
-        ListBola *bantu;
-        bantu=head;
-        while (bantu !=NULL){
-            cout<<bantu->b.r<<endl;
-            bantu=bantu->next;
-        }
-    }
-}
 int main()
 {
-    tambahDepan(3);
-    tambahDepan(7);
-    tambahBelakang(5);
-    tambahDepan(10);
-    tambahBelakang(10);
-    tambahBelakang(13);
-    tambahBelakang(19);
-
-    // cout<<head->next->b.r;
-    cetakList();
+    MyStack s;
+    s.push(8);
+    s.push(3);
+    s.push(2);
+    s.push(9);
+    s.pop();
+    s.pop();
+    s.pop();
+    s.pop();
+    s.printStackList();
     return 0;
 }
